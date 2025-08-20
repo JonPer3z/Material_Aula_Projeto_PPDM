@@ -18,7 +18,7 @@ export default function Footer() {
 
       <TouchableOpacity style={styles.footerButton}>
         <FontAwesome5 name="hand-holding-usd" size={24} color="white" />
-        <Text style={styles.footerText}>Pagar / Receber</Text>
+        <Text style={styles.footerText}>Transações</Text>
       </TouchableOpacity>
 
     </View>
