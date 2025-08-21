@@ -1,23 +1,25 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { AntDesign, FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons'; 
+import { AntDesign, FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons';
+
+import { COLORS } from './Constants/Coolors';
 
 export default function Footer() {
   return (
     <View style={styles.footerContainer}>
 
       <TouchableOpacity style={styles.footerButton}>
-        <Ionicons name="wallet" size={24} color="white" />
+        <Ionicons name="wallet" size={24} color={COLORS.white} />
         <Text style={styles.footerText}>Carteira</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.footerButton}>
-        <FontAwesome name="line-chart" size={24} color="white" />
+        <FontAwesome name="line-chart" size={24} color={COLORS.white} />
         <Text style={styles.footerText}>Investimentos</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.footerButton}>
-        <FontAwesome5 name="hand-holding-usd" size={24} color="white" />
+        <FontAwesome5 name="hand-holding-usd" size={24} color={COLORS.white} />
         <Text style={styles.footerText}>Transações</Text>
       </TouchableOpacity>
 
@@ -27,18 +29,18 @@ export default function Footer() {
 
 const styles = StyleSheet.create({
   footerContainer: {
-    backgroundColor: '#38b6ff', 
-    paddingVertical: 10, 
-    flexDirection: 'row',     
-    justifyContent: 'space-around', 
-    alignItems: 'center',     
+    backgroundColor: COLORS.azul,
+    paddingVertical: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   footerButton: {
-    alignItems: 'center', 
+    alignItems: 'center',
   },
   footerText: {
-    color: '#fff', 
+    color: COLORS.white,
     fontSize: 12,
-    marginTop: 4, 
+    marginTop: 4,
   },
 });
