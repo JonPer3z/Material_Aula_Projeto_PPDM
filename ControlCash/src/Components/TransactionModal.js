@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: COLORS.background,
     borderRadius: 20,
     padding: 25,
     width: '40%',
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     color: 'red',
   },
   receberText: {
-    color: 'green',
+    color: COLORS.green,
   },
   valueContainer: {
     flexDirection: 'row',
@@ -110,7 +110,6 @@ const styles = StyleSheet.create({
   },
   valueInput: {
     fontSize: 18,
-    fontWeight: 'bold',
     textAlign: 'right',
   },
   buttonsContainer: {
@@ -129,7 +128,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.red,
   },
   buttonConfirm: {
-    backgroundColor: COLORS.azul,
+    backgroundColor: COLORS.green,
   },
   textStyle: {
     color: 'white',
