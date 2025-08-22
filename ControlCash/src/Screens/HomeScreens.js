@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import Footer from "../Components/Footer";
-import { COLORS } from '../Components/Constants/Coolors';
+import { COLORS } from '../Components/Constants/Colors';
 import TransactionModal from '../Components/TransactionModal';
+import Header from "../Components/Header";
 
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -17,10 +18,12 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.screenContainer}>
-    
-      <TransactionModal 
-        visible={modalVisible} 
-        onClose={handleCloseModal} 
+
+      <Header />
+
+      <TransactionModal
+        visible={modalVisible}
+        onClose={handleCloseModal}
       />
 
       <View style={styles.contentContainer}>

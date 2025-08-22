@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import { COLORS } from './Constants/Coolors';
+import { COLORS } from './Constants/Colors';
 
 export default function TransactionModal({ visible, onClose }) {
     const [tipo, setTipo] = useState('pagar');

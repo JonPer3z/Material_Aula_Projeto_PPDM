@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome, FontAwesome5, Ionicons } from '@expo/vector-icons';
-import { COLORS } from './Constants/Coolors';
+import { COLORS } from './Constants/Colors';
 
 
 export default function Footer({ onTransactionPress }) {

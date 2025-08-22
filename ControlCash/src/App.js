@@ -6,8 +6,7 @@ import HomeScreen from './Screens/HomeScreens';
 export default function App() {
   return (
       <View style={styles.container}>
-      <HomeScreen/> 
-       <Header />    
+      <HomeScreen/>  
       <StatusBar style="auto" />
     </View>
   );
