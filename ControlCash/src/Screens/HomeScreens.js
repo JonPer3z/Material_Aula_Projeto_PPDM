@@ -1,30 +1,45 @@
+import React, { useState } from "react";
 import { View, Text, StyleSheet, SafeAreaView } from "react-native";
-
 import Footer from "../Components/Footer";
-import Header from "../Components/Header";
+import { COLORS } from '../Components/Constants/Coolors';
+import TransactionModal from '../Components/TransactionModal';
 
+export default function HomeScreen() {
+  const [modalVisible, setModalVisible] = useState(false);
 
-export default function HomeScreen(){
-    return(
-        <SafeAreaView style={styles.screenContainer}> 
-            <View style={styles.contentContainer}>
-                <Text style={styles.text}>CONTEÚDO PRINCIPAL DA TELA</Text>
-                <Header></Header>
-            </View>
-            <Footer />
-        
-        </SafeAreaView>
-    );
+  const handleOpenModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
+
+  return (
+    <SafeAreaView style={styles.screenContainer}>
+    
+      <TransactionModal 
+        visible={modalVisible} 
+        onClose={handleCloseModal} 
+      />
+
+      <View style={styles.contentContainer}>
+        <Text style={styles.text}>CONTEÚDO PRINCIPAL DA TELA</Text>
+      </View>
+
+      <Footer onTransactionPress={handleOpenModal} />
+
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   screenContainer: {
-    flex: 1, 
-    backgroundColor: '#f0f4f5' 
+    flex: 1,
+    backgroundColor: COLORS.background,
   },
-  // CONTAINER QUE EMPURRA O FOOTER PARA BAIXO POIS AINDA N TEM NADA NA TELA 
   contentContainer: {
-    flex: 1, 
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
