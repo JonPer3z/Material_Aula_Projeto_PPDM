@@ -35,11 +35,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footerButton: {
+    flex: 1,
     alignItems: 'center',
   },
   footerText: {
     color: COLORS.white,
     fontSize: 12,
     marginTop: 4,
+    alignItems: 'center',
   },
 });
