@@ -1,25 +1,35 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import Feather from '@expo/vector-icons/Feather';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { COLORS } from './Constants/Coolors';
 
-export default function Header() {
-  const [showBalance, setShowBalance] = useState(true);
+// MUDANÇA: O componente agora recebe os totais como propriedades
+export default function Header({ saldoTotal, receitas, despesas, onCardPress }) {
+  const [showBalance, setShowBalance] = React.useState(true);
+
+  // Função para formatar os números como moeda brasileira (R$)
+  const formatCurrency = (value) => {
+    if (typeof value !== 'number') {
+      value = 0;
+    }
+    return value.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  };
 
   return (
     <View style={styles.container}>
-      {/* Linha superior */}
       <View style={styles.topRow}>
-        <View style={{ width: 40 }} /> 
-        <Text style={styles.month}>Agosto ▾</Text>
+        <View style={{ width: 40 }} />
+        <Text style={styles.month}>Setembro ▾</Text>
         <Feather name="user" size={32} color="black" />
       </View>
 
-      {/* Saldo */}
       <Text style={styles.balanceLabel}>Saldo em conta</Text>
       <Text style={styles.balanceValue}>
-        {showBalance ? 'R$ 50.000,00' : '••••••••'}
+        {/* MUDANÇA: Mostrando o saldoTotal formatado */}
+        {showBalance ? formatCurrency(saldoTotal) : '••••••••'}
       </Text>
 
       <TouchableOpacity
@@ -34,38 +44,38 @@ export default function Header() {
         />
       </TouchableOpacity>
 
-      {/* Receitas e Despesas */}
       <View style={styles.cardsRow}>
-        {/* Receitas */}
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => onCardPress('receber')}>
           <View style={[styles.iconCircle, { backgroundColor: COLORS.green }]}>
             <Ionicons name="arrow-up" size={28} color={COLORS.white} />
           </View>
           <View>
             <Text style={styles.cardTitle}>Receitas</Text>
             <Text style={[styles.cardValue, { color: COLORS.green }]}>
-              R$10.000,00
+              {/* MUDANÇA: Mostrando o total de receitas formatado */}
+              {formatCurrency(receitas)}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
 
-        {/* Despesas */}
-        <View style={styles.card}>
+        <TouchableOpacity style={styles.card} onPress={() => onCardPress('pagar')}>
           <View style={[styles.iconCircle, { backgroundColor: COLORS.red }]}>
             <Ionicons name="arrow-down" size={28} color={COLORS.white} />
           </View>
           <View>
             <Text style={styles.cardTitle}>Despesas</Text>
             <Text style={[styles.cardValue, { color: COLORS.red }]}>
-              R$15.000,00
+              {/* MUDANÇA: Mostrando o total de despesas formatado */}
+              {formatCurrency(despesas)}
             </Text>
           </View>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
+// Os estilos continuam os mesmos
 const styles = StyleSheet.create({
   container: {
     paddingTop: 56,
