@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
-import { COLORS } from './Constants/Colors';
+import { COLORS } from './Constants/Coolors';
 
 export default function Header() {
   const [showBalance, setShowBalance] = useState(true);
