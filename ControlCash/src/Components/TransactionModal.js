@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { 
-    Modal, 
-    View, 
-    Text, 
-    StyleSheet, 
-    TouchableOpacity, 
-    TextInput, 
+import {
+    Modal,
+    View,
+    Text,
+    StyleSheet,
+    TouchableOpacity,
+    TextInput,
     Keyboard,
-    Pressable, // MUDANÇA: Usaremos o Pressable para o fundo
-    TouchableWithoutFeedback // MUDANÇA: Usaremos como "escudo"
+    Pressable,
+    TouchableWithoutFeedback
 } from 'react-native';
+
+// Supondo que seu arquivo de cores esteja em uma pasta Constants no mesmo nível ou acima
+// Ajuste o caminho se necessário
 import { COLORS } from './Constants/Coolors';
 
 export default function TransactionModal({ visible, onClose, initialType, onAddTransaction }) {
@@ -42,18 +45,13 @@ export default function TransactionModal({ visible, onClose, initialType, onAddT
       visible={visible}
       onRequestClose={onClose}
     >
-      {/* MUDANÇA: O fundo agora é um Pressable que fecha o modal */}
       <Pressable style={styles.centeredView} onPress={onClose}>
-        
-        {/* MUDANÇA CRÍTICA: Este componente age como um "escudo".
-            Ele captura o clique dentro do modal, impedindo que ele
-            se propague para o fundo e feche o modal. */}
         <TouchableWithoutFeedback>
           <View style={styles.modalView}>
             <View style={styles.selectorContainer}>
               <TouchableOpacity
                 style={[
-                  styles.selectorButton,
+                  styles.selectorButtonPagar,
                   tipo === 'pagar' ? styles.pagarButtonActive : {},
                 ]}
                 onPress={() => setTipo('pagar')}
@@ -67,7 +65,7 @@ export default function TransactionModal({ visible, onClose, initialType, onAddT
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
-                  styles.selectorButton,
+                  styles.selectorButtonReceber,
                   tipo === 'receber' ? styles.receberButtonActive : {},
                 ]}
                 onPress={() => setTipo('receber')}
@@ -90,7 +88,7 @@ export default function TransactionModal({ visible, onClose, initialType, onAddT
                 placeholderTextColor="#aaa"
                 value={valor}
                 onChangeText={setValor}
-                autoFocus={true} // Adicionado para focar automaticamente ao abrir
+                autoFocus={true}
               />
             </View>
 
@@ -115,7 +113,6 @@ export default function TransactionModal({ visible, onClose, initialType, onAddT
   );
 }
 
-// Seus estilos permanecem os mesmos
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
@@ -143,11 +140,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 20,
   },
-  selectorButton: {
+  selectorButtonPagar: {
     flex: 1,
     paddingVertical: 10,
     borderRadius: 20,
     alignItems: 'center',
+    // ✅ CORREÇÃO AQUI: Usando a variável de cor, sem aspas
+    backgroundColor: COLORS.erro,
+  },
+  selectorButtonReceber: {
+    flex: 1,
+    paddingVertical: 10,
+    borderRadius: 20,
+    alignItems: 'center',
+    // ✅ CORREÇÃO AQUI: Usando a variável de cor, sem aspas
+    backgroundColor: COLORS.sucesso,
   },
   selectorText: {
     fontSize: 16,
@@ -157,16 +164,16 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   pagarButtonActive: {
-    backgroundColor: COLORS.red,
+    backgroundColor: COLORS.erro, // Originalmente já estava certo aqui, mas usando seu novo COLORS
   },
   receberButtonActive: {
-    backgroundColor: COLORS.green,
+    backgroundColor: COLORS.sucesso, // Originalmente já estava certo aqui
   },
   pagarText: {
-    color: COLORS.red,
+    color: COLORS.erro, // Originalmente já estava certo aqui
   },
   receberText: {
-    color: COLORS.green,
+    color: COLORS.sucesso, // Originalmente já estava certo aqui
   },
   valueContainer: {
     flexDirection: 'row',
@@ -202,10 +209,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   buttonCancel: {
-    backgroundColor: '#ccc',
+    backgroundColor: COLORS.erro, // Originalmente já estava certo aqui
   },
   buttonConfirm: {
-    backgroundColor: COLORS.azul,
+    backgroundColor: COLORS.sucesso, // Originalmente já estava certo aqui
   },
   textStyle: {
     color: 'white',

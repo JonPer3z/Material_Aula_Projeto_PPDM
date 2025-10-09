@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-import { SafeAreaView, StyleSheet, View, Text } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+} from "react-native";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
-import TransactionModal from '../Components/TransactionModal';
-import { COLORS } from '../Components/Constants/Coolors';
+import TransactionModal from "../Components/TransactionModal";
+import BalanceChart from "../Components/BalanceChart";
+import { COLORS } from "../Components/Constants/Coolors";
 
 export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [initialTransactionType, setInitialTransactionType] = useState('pagar');
-  
-  // MUDANÇA: Agora este estado vai guardar nossa lista de transações
+  const [initialTransactionType, setInitialTransactionType] = useState("pagar");
   const [transacoes, setTransacoes] = useState([]);
 
   const handleOpenModal = (type) => {
@@ -21,32 +26,70 @@ export default function HomeScreen() {
     setModalVisible(false);
   };
 
-  // MUDANÇA CRÍTICA: Esta função agora atualiza o estado com a nova transação
   const handleAddTransaction = (novaTransacao) => {
-    // Adiciona a nova transação à lista existente
-    setTransacoes(listaAnterior => [...listaAnterior, novaTransacao]);
+    setTransacoes((listaAnterior) => [...listaAnterior, novaTransacao]);
   };
 
-  // Lógica para calcular os totais a partir da lista de transações
   const receitas = transacoes
-    .filter(t => t.tipo === 'receber')
+    .filter((t) => t.tipo === "receber")
     .reduce((soma, t) => soma + t.valor, 0);
 
   const despesas = transacoes
-    .filter(t => t.tipo === 'pagar')
+    .filter((t) => t.tipo === "pagar")
     .reduce((soma, t) => soma + t.valor, 0);
 
   const saldo = receitas - despesas;
 
   return (
     <SafeAreaView style={styles.screenContainer}>
-      {/* MUDANÇA: Passando os valores calculados dinamicamente para o Header */}
       <Header
         saldoTotal={saldo}
         receitas={receitas}
         despesas={despesas}
         onCardPress={handleOpenModal}
       />
+
+      <BalanceChart transacoes={transacoes} />
+
+      <View style={styles.transactionsContainer}>
+        <Text style={styles.transactionsTitle}>🧾 Transações Recentes</Text>
+
+        {transacoes.length === 0 ? (
+          <Text style={styles.noTransactionsText}>
+            Nenhuma transação registrada ainda.
+          </Text>
+        ) : (
+          <FlatList
+            data={transacoes.slice(-5).reverse()}
+            keyExtractor={(_, index) => index.toString()}
+            renderItem={({ item }) => (
+              <View style={styles.transactionCard}>
+                <View>
+                  <Text style={styles.transactionType}>
+                    {item.tipo === "receber" ? "Receita" : "Despesa"}
+                  </Text>
+                  <Text style={styles.transactionDate}>
+                    {new Date().toLocaleDateString()}
+                  </Text>
+                </View>
+                <Text
+                  style={[
+                    styles.transactionValue,
+                    {
+                      color:
+                        item.tipo === "receber"
+                          ? COLORS.sucesso
+                          : COLORS.erro,
+                    },
+                  ]}
+                >
+                  {item.tipo === "receber" ? "+ " : "- "}R$ {item.valor.toFixed(2)}
+                </Text>
+              </View>
+            )}
+          />
+        )}
+      </View>
 
       <TransactionModal
         visible={modalVisible}
@@ -55,12 +98,7 @@ export default function HomeScreen() {
         onAddTransaction={handleAddTransaction}
       />
 
-      <View style={styles.contentContainer}>
-        {/* Aqui você poderia começar a mostrar a lista de transações */}
-        <Text style={styles.text}>Transações Recentes</Text>
-      </View>
-
-      <Footer onTransactionPress={() => handleOpenModal('pagar')} />
+      <Footer onTransactionPress={() => handleOpenModal("pagar")} />
     </SafeAreaView>
   );
 }
@@ -70,14 +108,48 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
-  contentContainer: {
+  transactionsContainer: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    paddingHorizontal: 20,
+    marginTop: 12,
   },
-  text: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  transactionsTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+    color: COLORS.azulEscuro,
+  },
+  noTransactionsText: {
+    fontSize: 14,
+    color: COLORS.textSecondary,
+    textAlign: "center",
+    marginTop: 10,
+  },
+  transactionCard: {
+    backgroundColor: COLORS.cardBackground,
+    padding: 14,
+    borderRadius: 14,
+    marginVertical: 6,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: COLORS.borderLight,
+    shadowColor: "#000",
+    shadowOpacity: 0.08,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  transactionType: {
+    fontSize: 14,
+    color: COLORS.text,
+  },
+  transactionDate: {
+    fontSize: 12,
+    color: COLORS.textSecondary,
+  },
+  transactionValue: {
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
