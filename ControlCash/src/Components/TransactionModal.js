@@ -11,8 +11,8 @@ import {
     TouchableWithoutFeedback
 } from 'react-native';
 
-// Supondo que seu arquivo de cores esteja em uma pasta Constants no mesmo nível ou acima
-// Ajuste o caminho se necessário
+// Lembre-se de ajustar o caminho para o seu arquivo de cores se necessário
+// E de ter a cor 'azul' e 'textSecondary' nele!
 import { COLORS } from './Constants/Coolors';
 
 export default function TransactionModal({ visible, onClose, initialType, onAddTransaction }) {
@@ -48,31 +48,32 @@ export default function TransactionModal({ visible, onClose, initialType, onAddT
       <Pressable style={styles.centeredView} onPress={onClose}>
         <TouchableWithoutFeedback>
           <View style={styles.modalView}>
+
             <View style={styles.selectorContainer}>
               <TouchableOpacity
                 style={[
-                  styles.selectorButtonPagar,
+                  styles.selectorButton,
                   tipo === 'pagar' ? styles.pagarButtonActive : {},
                 ]}
                 onPress={() => setTipo('pagar')}
               >
                 <Text style={[
                   styles.selectorText,
-                  tipo === 'pagar' ? styles.textActive : styles.pagarText,
+                  tipo === 'pagar' ? styles.textActive : styles.pagarTextInactive,
                 ]}>
                   Pagar
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={[
-                  styles.selectorButtonReceber,
+                  styles.selectorButton,
                   tipo === 'receber' ? styles.receberButtonActive : {},
                 ]}
                 onPress={() => setTipo('receber')}
               >
                 <Text style={[
                   styles.selectorText,
-                  tipo === 'receber' ? styles.textActive : styles.receberText,
+                  tipo === 'receber' ? styles.textActive : styles.receberTextInactive,
                 ]}>
                   Receber
                 </Text>
@@ -92,20 +93,24 @@ export default function TransactionModal({ visible, onClose, initialType, onAddT
               />
             </View>
 
+            {/* --- BOTÕES DE AÇÃO (Cancelar/Finalizar) - MUDANÇA AQUI --- */}
             <View style={styles.buttonsContainer}>
               <TouchableOpacity
                 style={[styles.button, styles.buttonCancel]}
                 onPress={onClose}
               >
-                <Text style={styles.textStyle}>Cancelar</Text>
+                {/* Texto do cancelar agora usa o novo estilo */}
+                <Text style={styles.buttonCancelText}>Cancelar</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                // Estilo simplificado para um único botão de confirmação
                 style={[styles.button, styles.buttonConfirm]}
                 onPress={handleFinalizar}
               >
                 <Text style={styles.textStyle}>Finalizar</Text>
               </TouchableOpacity>
             </View>
+
           </View>
         </TouchableWithoutFeedback>
       </Pressable>
@@ -114,6 +119,7 @@ export default function TransactionModal({ visible, onClose, initialType, onAddT
 }
 
 const styles = StyleSheet.create({
+  // --- ESTRUTURA DO MODAL (sem alterações) ---
   centeredView: {
     flex: 1,
     justifyContent: 'center',
@@ -132,52 +138,55 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+
+  // --- ESTILOS DOS SELETORES (sem alterações) ---
   selectorContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
     width: '100%',
     marginBottom: 20,
     backgroundColor: '#f0f0f0',
     borderRadius: 20,
+    padding: 4,
   },
-  selectorButtonPagar: {
+  selectorButton: {
     flex: 1,
     paddingVertical: 10,
-    borderRadius: 20,
+    borderRadius: 16,
     alignItems: 'center',
-    // ✅ CORREÇÃO AQUI: Usando a variável de cor, sem aspas
+  },
+  pagarButtonActive: {
     backgroundColor: COLORS.erro,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
   },
-  selectorButtonReceber: {
-    flex: 1,
-    paddingVertical: 10,
-    borderRadius: 20,
-    alignItems: 'center',
-    // ✅ CORREÇÃO AQUI: Usando a variável de cor, sem aspas
+  receberButtonActive: {
     backgroundColor: COLORS.sucesso,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+    elevation: 3,
   },
   selectorText: {
     fontSize: 16,
     fontWeight: 'bold',
   },
   textActive: {
-    color: 'white',
+    color: COLORS.white,
   },
-  pagarButtonActive: {
-    backgroundColor: COLORS.erro, // Originalmente já estava certo aqui, mas usando seu novo COLORS
+  pagarTextInactive: {
+    color: COLORS.erro,
   },
-  receberButtonActive: {
-    backgroundColor: COLORS.sucesso, // Originalmente já estava certo aqui
+  receberTextInactive: {
+    color: COLORS.sucesso,
   },
-  pagarText: {
-    color: COLORS.erro, // Originalmente já estava certo aqui
-  },
-  receberText: {
-    color: COLORS.sucesso, // Originalmente já estava certo aqui
-  },
+
+  // --- ESTILOS DO INPUT DE VALOR (sem alterações) ---
   valueContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     width: '100%',
     borderTopWidth: 1,
@@ -196,10 +205,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 10,
   },
+
+  // --- ESTILOS DOS BOTÕES DE AÇÃO (MUDANÇA AQUI) ---
   buttonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     width: '100%',
+    marginTop: 10,
   },
   button: {
     borderRadius: 10,
@@ -207,13 +218,24 @@ const styles = StyleSheet.create({
     elevation: 2,
     flex: 1,
     marginHorizontal: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonCancel: {
-    backgroundColor: COLORS.erro, // Originalmente já estava certo aqui
+    backgroundColor: 'transparent',
+    elevation: 0,
   },
+  buttonCancelText: {
+    // MUDANÇA: Cor alterada para o azul da marca
+    color: COLORS.azul,
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
+  // NOVO ESTILO: Botão de confirmação agora é sempre azul
   buttonConfirm: {
-    backgroundColor: COLORS.sucesso, // Originalmente já estava certo aqui
+    backgroundColor: COLORS.azul,
   },
+  // ESTILOS REMOVIDOS: buttonFinalizarPagar e buttonFinalizarReceber não são mais necessários
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
